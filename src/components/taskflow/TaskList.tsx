@@ -1,11 +1,12 @@
-"use client";
+// "use client";
 
 import type React from 'react';
 import type { Task } from '@/types/taskflow';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Trash2, Edit3 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 interface TaskListProps {
   tasks: Task[];
@@ -18,45 +19,58 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onRemoveTask }) => {
     return (
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>Tasks</CardTitle>
+          <CardTitle>Task Overview</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">No tasks added yet. Use the form above to add tasks.</p>
+          <p className="text-muted-foreground text-sm mt-2">Tasks you add will appear here similar to the image provided: Tâche, Durée, Tâches antérieures.</p>
         </CardContent>
       </Card>
     );
   }
 
+  const getDependencyNames = (dependencyIds: string[]): string => {
+    if (!dependencyIds || dependencyIds.length === 0) return '—';
+    return dependencyIds
+      .map(depId => {
+        const dependentTask = tasks.find(t => t.id === depId);
+        return dependentTask ? dependentTask.name : depId; // Show name if found, else ID
+      })
+      .join(', ');
+  };
+
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Current Tasks ({tasks.length})</CardTitle>
+        <CardTitle>Task Overview ({tasks.length})</CardTitle>
+        <CardDescription>Summary of entered tasks: Name, Duration, and Predecessors.</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-72">
-          <ul className="space-y-2">
-            {tasks.map((task) => (
-              <li key={task.id} className="flex items-center justify-between p-3 border rounded-lg bg-background shadow-sm hover:shadow-md transition-shadow">
-                <div>
-                  <p className="font-semibold text-primary">{task.name}</p>
-                  <p className="text-sm text-muted-foreground">Duration: {task.duration}</p>
-                  {task.dependencies.length > 0 && (
-                    <p className="text-xs text-muted-foreground">
-                      Depends on: {task.dependencies.join(', ')}
-                    </p>
-                  )}
-                </div>
-                <div className="space-x-2">
-                  {/* <Button variant="ghost" size="icon" onClick={() => onEditTask(task)} title="Edit Task">
-                    <Edit3 className="h-4 w-4" />
-                  </Button> */}
-                  <Button variant="ghost" size="icon" onClick={() => onRemoveTask(task.id)} title="Remove Task" className="text-destructive hover:text-destructive/90">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Tâche (Name)</TableHead>
+                <TableHead className="text-center">Durée (Duration)</TableHead>
+                <TableHead>Tâches antérieures (Predecessors)</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tasks.map((task) => (
+                <TableRow key={task.id}>
+                  <TableCell className="font-medium">{task.name}</TableCell>
+                  <TableCell className="text-center">{task.duration}</TableCell>
+                  <TableCell>{getDependencyNames(task.dependencies)}</TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="icon" onClick={() => onRemoveTask(task.id)} title="Remove Task" className="text-destructive hover:text-destructive/90">
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </ScrollArea>
       </CardContent>
     </Card>
