@@ -15,8 +15,8 @@ import type { Task } from '@/types/taskflow';
 import { PlusCircle } from 'lucide-react';
 
 const taskSchema = z.object({
-  name: z.string().min(1, "Task name is required"),
-  duration: z.coerce.number().min(0.1, "Duration must be positive"),
+  name: z.string().min(1, "Le nom de la tâche est requis"),
+  duration: z.coerce.number().min(0.1, "La durée doit être positive"),
   dependencies: z.array(z.string()),
 });
 
@@ -31,7 +31,7 @@ interface TaskInputFormProps {
 const TaskInputForm: React.FC<TaskInputFormProps> = ({ onAddTask, existingTasks }) => {
   const { control, handleSubmit, register, reset, formState: { errors } } = useForm<TaskFormData>({
     resolver: zodResolver(taskSchema),
-    defaultValues: {
+ defaultValues: {
       name: '',
       duration: 1,
       dependencies: [],
@@ -45,19 +45,19 @@ const TaskInputForm: React.FC<TaskInputFormProps> = ({ onAddTask, existingTasks 
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4 border rounded-lg shadow-sm bg-card">
-      <h3 className="text-lg font-semibold text-card-foreground">Add New Task</h3>
+      <h3 className="text-lg font-semibold text-card-foreground">Ajouter une nouvelle tâche</h3>
       <div>
-        <Label htmlFor="name">Task Name</Label>
+        <Label htmlFor="name">Nom de la tâche</Label>
         <Input id="name" {...register('name')} aria-invalid={errors.name ? "true" : "false"} />
         {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
       </div>
 
       <div>
-        <Label htmlFor="duration">Duration (e.g., days)</Label>
+        <Label htmlFor="duration">Durée (jours par exemple)</Label>
         <Input id="duration" type="number" step="0.1" {...register('duration')} aria-invalid={errors.duration ? "true" : "false"} />
         {errors.duration && <p className="text-sm text-destructive">{errors.duration.message}</p>}
       </div>
-
+ 
       <div>
         <Label>Dependencies</Label>
         <Controller
@@ -68,12 +68,12 @@ const TaskInputForm: React.FC<TaskInputFormProps> = ({ onAddTask, existingTasks 
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-start font-normal">
                   {field.value && field.value.length > 0
-                    ? `${field.value.length} selected`
-                    : "Select dependencies"}
+                    ? `${field.value.length} sélectionnée(s)`
+                    : "Sélectionner les dépendances"}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
-                <ScrollArea className="h-48">
+                <ScrollArea className="h-48"> 
                   {existingTasks.length === 0 ? (
                      <p className="p-4 text-sm text-muted-foreground">No tasks available to select.</p>
                   ) : (
@@ -104,7 +104,7 @@ const TaskInputForm: React.FC<TaskInputFormProps> = ({ onAddTask, existingTasks 
       </div>
 
       <Button type="submit" className="w-full">
-        <PlusCircle className="mr-2 h-4 w-4" /> Add Task
+        <PlusCircle className="mr-2 h-4 w-4" /> Ajouter la tâche
       </Button>
     </form>
   );

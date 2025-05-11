@@ -67,6 +67,14 @@ const TaskFlowShell: React.FC = () => {
     });
   }, [toast]);
   
+  const handleResetApplication = useCallback(() => {
+    setTasks([]);
+    setSchedulingResult(null);
+    toast({
+      title: "Application Reset",
+      description: "All tasks and calculations have been cleared.",
+    });
+  }, [toast]);
   const handleCalculateSchedule = useCallback(() => {
     if (tasks.length === 0) {
       toast({
@@ -121,6 +129,9 @@ const TaskFlowShell: React.FC = () => {
                 <h3 className="text-lg font-semibold text-card-foreground mb-2">Controls</h3>
                 <Button onClick={handleCalculateSchedule} className="w-full" disabled={tasks.length === 0}>
                   Calculate Schedule & Critical Path
+                </Button>
+                <Button variant="outline" onClick={handleResetApplication} className="w-full mt-2">
+ Reset Application
                 </Button>
                  {tasks.length === 0 && (
                     <Alert variant="default" className="mt-2">

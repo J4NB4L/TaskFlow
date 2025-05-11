@@ -19,11 +19,10 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onRemoveTask }) => {
     return (
       <Card className="mt-4">
         <CardHeader>
-          <CardTitle>Task Overview</CardTitle>
+          <CardTitle>Aperçu des Tâches</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">No tasks added yet. Use the form above to add tasks.</p>
-          <p className="text-muted-foreground text-sm mt-2">Tasks you add will appear here similar to the image provided: Tâche, Durée, Tâches antérieures.</p>
+          <p className="text-muted-foreground">Aucune tâche ajoutée pour le moment. Utilisez le formulaire ci-dessus pour ajouter des tâches.</p>
         </CardContent>
       </Card>
     );
@@ -42,17 +41,17 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onRemoveTask }) => {
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Task Overview ({tasks.length})</CardTitle>
-        <CardDescription>Summary of entered tasks: Name, Duration, and Predecessors.</CardDescription>
+        <CardTitle>Aperçu des Tâches ({tasks.length})</CardTitle>
+        <CardDescription>Récapitulatif des tâches saisies : Nom, Durée et Antécédents.</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-72">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Tâche (Name)</TableHead>
-                <TableHead className="text-center">Durée (Duration)</TableHead>
-                <TableHead>Tâches antérieures (Predecessors)</TableHead>
+                <TableHead>Nom de la Tâche</TableHead>
+                <TableHead className="text-center">Durée</TableHead>
+                <TableHead>Tâches antérieures</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -63,7 +62,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onRemoveTask }) => {
                   <TableCell className="text-center">{task.duration}</TableCell>
                   <TableCell>{getDependencyNames(task.dependencies)}</TableCell>
                   <TableCell className="text-right">
-                    <Button variant="ghost" size="icon" onClick={() => onRemoveTask(task.id)} title="Remove Task" className="text-destructive hover:text-destructive/90">
+                    <Button variant="ghost" size="icon" onClick={() => onRemoveTask(task.id)} title="Supprimer la Tâche" className="text-destructive hover:text-destructive/90">
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </TableCell>

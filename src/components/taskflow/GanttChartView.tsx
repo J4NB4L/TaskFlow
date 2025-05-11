@@ -12,7 +12,7 @@ interface GanttChartViewProps {
 
 const GanttChartView: React.FC<GanttChartViewProps> = ({ tasks, projectDuration }) => {
   if (tasks.length === 0) {
-    return <p className="text-muted-foreground p-4">No tasks to display in Gantt chart.</p>;
+    return <p className="text-muted-foreground p-4">Aucune tâche à afficher dans le diagramme de Gantt.</p>;
   }
 
   const chartData = tasks.map(task => ({
@@ -36,8 +36,8 @@ const GanttChartView: React.FC<GanttChartViewProps> = ({ tasks, projectDuration 
   return (
     <Card className="mt-4 overflow-hidden">
       <CardHeader>
-        <CardTitle>Gantt Chart</CardTitle>
-        <CardDescription>Visual representation of task schedule. Critical tasks are highlighted (typically in green).</CardDescription>
+        <CardTitle>Diagramme de Gantt</CardTitle>
+        <CardDescription>Représentation visuelle du planning des tâches. Les tâches critiques sont mises en évidence (généralement en vert).</CardDescription>
       </CardHeader>
       <CardContent className="h-[500px] p-2 pr-6 pb-6">
         <ResponsiveContainer width="100%" height="100%">
@@ -51,7 +51,7 @@ const GanttChartView: React.FC<GanttChartViewProps> = ({ tasks, projectDuration 
             <XAxis 
               type="number" 
               domain={[0, projectDuration]} 
-              label={{ value: "Time", position: "insideBottom", offset: -10 }} 
+              label={{ value: "Temps", position: "insideBottom", offset: -10 }} 
               allowDecimals={false}
             />
             <YAxis 
@@ -69,7 +69,7 @@ const GanttChartView: React.FC<GanttChartViewProps> = ({ tasks, projectDuration 
               formatter={(value: any, name: string, props: any) => {
                 const { payload } = props;
                 if (name === 'duration') {
-                  return [`ES: ${payload.es}, EF: ${payload.ef}, LS: ${payload.ls}, LF: ${payload.lf}, Slack: ${payload.totalSlack.toFixed(1)}`, name];
+                  return [`Début au plus tôt (ES): ${payload.es}, Fin au plus tôt (EF): ${payload.ef}, Début au plus tard (LS): ${payload.ls}, Fin au plus tard (LF): ${payload.lf}, Marge Totale (Slack): ${payload.totalSlack.toFixed(1)}`, "Durée"];
                 }
                 // Hide the 'es' (offset) bar from tooltip
                 if (name === 'es') return [null, null] as any;
@@ -79,8 +79,8 @@ const GanttChartView: React.FC<GanttChartViewProps> = ({ tasks, projectDuration 
             <Legend wrapperStyle={{paddingTop: '10px'}}/>
             {/* Transparent bar for offset, representing ES */}
             <Bar dataKey="es" stackId="time" fill="transparent" barSize={20} name="Start Offset" legendType="none" />
-            {/* Visible bar for duration */}
-            <Bar dataKey="duration" stackId="time" barSize={20} name="Task Duration (Critical in Green)">
+            {/* Visible bar for duration (Critical in Accent/Green) */}
+            <Bar dataKey="duration" stackId="time" barSize={20} name="Durée de la Tâche (Critique en Vert)">
               {/* No LabelList here, task names are on Y-axis */}
             </Bar>
           </BarChart>

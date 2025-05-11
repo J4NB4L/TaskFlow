@@ -12,10 +12,10 @@ const Header: React.FC<HeaderProps> = ({ onLoadDemoData }) => {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2">
           <GanttChartSquare size={32} />
-          <h1 className="text-2xl font-bold">TaskFlow</h1>
+          <h1 className="text-2xl font-bold">TaskFlow (Gestion de Projet)</h1>
         </div>
         <Button variant="secondary" onClick={onLoadDemoData}>
-          Load Demo Data
+          Charger des données de démonstration
         </Button>
       </div>
     </header>

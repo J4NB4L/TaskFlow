@@ -14,16 +14,16 @@ interface MpmPertTableViewProps {
 
 const MpmPertTableView: React.FC<MpmPertTableViewProps> = ({ tasks, viewType }) => {
   if (tasks.length === 0) {
-    return <p className="text-muted-foreground p-4">No task data to display for {viewType}.</p>;
+    return <p className="text-muted-foreground p-4">Aucune donnée de tâche à afficher pour {viewType}.</p>;
   }
 
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>{viewType} Data Summary</CardTitle>
+        <CardTitle>Résumé des données {viewType}</CardTitle>
         <CardDescription>
-          Detailed information for each task including start/finish times and slacks.
-          {viewType === 'PERT' && " PERT typically focuses on probabilistic durations, but here we show deterministic results for consistency."}
+          Informations détaillées pour chaque tâche, y compris les heures de début/fin et les marges.
+          {viewType === 'PERT' && " Le PERT se concentre généralement sur les durées probabilistes, mais ici nous affichons des résultats déterministes pour la cohérence."}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -32,13 +32,13 @@ const MpmPertTableView: React.FC<MpmPertTableViewProps> = ({ tasks, viewType }) 
             <TableHeader>
               <TableRow>
                 <TableHead>Task</TableHead>
-                <TableHead>Duration</TableHead>
-                <TableHead>ES</TableHead>
-                <TableHead>EF</TableHead>
-                <TableHead>LS</TableHead>
-                <TableHead>LF</TableHead>
-                <TableHead>Total Slack</TableHead>
-                <TableHead>Free Slack</TableHead>
+                <TableHead>Durée</TableHead>
+                <TableHead>Début au plus tôt</TableHead>
+                <TableHead>Fin au plus tôt</TableHead>
+                <TableHead>Début au plus tard</TableHead>
+                <TableHead>Fin au plus tard</TableHead>
+                <TableHead>Marge totale</TableHead>
+                <TableHead>Marge libre</TableHead>
                 <TableHead>Critical</TableHead>
               </TableRow>
             </TableHeader>
@@ -55,9 +55,9 @@ const MpmPertTableView: React.FC<MpmPertTableViewProps> = ({ tasks, viewType }) 
                   <TableCell>{task.freeSlack.toFixed(1)}</TableCell>
                   <TableCell>
                     {task.isCritical ? (
-                      <Badge variant="destructive" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>Yes</Badge>
+                      <Badge variant="destructive" style={{ backgroundColor: 'hsl(var(--accent))', color: 'hsl(var(--accent-foreground))' }}>Oui</Badge>
                     ) : (
-                      <Badge variant="secondary">No</Badge>
+                      <Badge variant="secondary">Non</Badge>
                     )}
                   </TableCell>
                 </TableRow>

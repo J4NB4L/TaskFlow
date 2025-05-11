@@ -20,13 +20,13 @@ const ViewTabs: React.FC<ViewTabsProps> = ({ tasks, schedulingResult }) => {
   if (!schedulingResult || tasks.length === 0) {
     return (
       <div className="mt-6 p-8 border rounded-lg shadow-sm bg-card text-center">
-        <p className="text-muted-foreground">Add tasks and calculate the schedule to see visualizations.</p>
+ <p className="text-muted-foreground">Ajoutez des tâches et calculez le planning pour visualiser.</p>
       </div>
     );
   }
 
   return (
-    <Tabs defaultValue="gantt" className="w-full mt-6">
+ <Tabs defaultValue="gantt" className="w-full mt-6">
       <TabsList className="grid w-full grid-cols-3">
         <TabsTrigger value="gantt"><BarChartHorizontalBig className="mr-2 h-4 w-4" />Gantt Chart</TabsTrigger>
         <TabsTrigger value="mpm"><Network className="mr-2 h-4 w-4" />MPM</TabsTrigger>
