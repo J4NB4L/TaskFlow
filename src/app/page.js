@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Plus, Trash2, Play, Database, Calendar, Network } from 'lucide-react';
+import { Plus, Trash2, Play, Database, Calendar, Network, Sparkles, BarChart3 } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
@@ -29,7 +29,6 @@ export default function Home() {
 
   const addTask = () => {
     if (newTask.id && newTask.name && newTask.duration) {
-      // Vérifier que l'ID n'existe pas déjà
       if (tasks.find(task => task.id === newTask.id)) {
         alert('Une tâche avec cet ID existe déjà.');
         return;
@@ -41,7 +40,6 @@ export default function Home() {
         dependencies: newTask.dependencies
       }]);
 
-      // Réinitialiser le formulaire
       setNewTask({ id: '', name: '', duration: '', dependencies: [] });
       setDependencyInput('');
     }
@@ -61,13 +59,12 @@ export default function Home() {
     setDependencyInput('');
   };
 
-  const generateDiagram = (type) => {
+  const generateDiagrams = () => {
     if (tasks.length === 0) {
-      alert('Veuillez ajouter au moins une tâche pour générer le diagramme.');
+      alert('Veuillez ajouter au moins une tâche pour générer les diagrammes.');
       return;
     }
 
-    // Valider les dépendances avant de générer
     const invalidDependencies = [];
     tasks.forEach(task => {
       task.dependencies.forEach(dep => {
@@ -86,17 +83,15 @@ export default function Home() {
       data: JSON.stringify(tasks)
     });
 
-    router.push(`/${type}?${queryParams.toString()}`);
+    router.push(`/visualization?${queryParams.toString()}`);
   };
 
   const handleDependencyChange = (value) => {
     setDependencyInput(value);
-
-    // Parser les dépendances : séparer par virgules, espaces ou points-virgules
     const deps = value
-      .split(/[,;\s]+/) // Séparer par virgules, points-virgules ou espaces
-      .map(dep => dep.trim().toUpperCase()) // Nettoyer et mettre en majuscules
-      .filter(dep => dep !== '' && dep.length > 0); // Supprimer les entrées vides
+      .split(/[,;\s]+/)
+      .map(dep => dep.trim().toUpperCase())
+      .filter(dep => dep !== '' && dep.length > 0);
 
     setNewTask(prev => ({ ...prev, dependencies: deps }));
   };
@@ -106,218 +101,259 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            Générateur de Diagrammes
-          </h1>
-          <p className="text-xl text-gray-600 mb-6">
-            Créez facilement vos diagrammes de Gantt et PERT
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-md">
-              <Calendar className="w-5 h-5 text-blue-600" />
-              <span className="text-gray-700">Diagramme de Gantt</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/10"></div>
+        <div className="relative container mx-auto px-4 py-16">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
+              <Sparkles className="w-8 h-8 text-blue-600" />
+              <h1 className="text-5xl md:text-7xl font-bold">
+                Project Planner
+              </h1>
             </div>
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-md">
-              <Network className="w-5 h-5 text-green-600" />
-              <span className="text-gray-700">Diagramme PERT</span>
+            <p className="text-xl md:text-2xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Créez et visualisez vos projets avec des diagrammes de Gantt et PERT professionnels
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-6 mb-12">
+              <div className="group flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                <div className="p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg">
+                  <Calendar className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-slate-800">Diagramme de Gantt</h3>
+                  <p className="text-sm text-slate-600">Planification temporelle</p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-3 bg-white/80 backdrop-blur-sm px-6 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                <div className="p-2 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg">
+                  <Network className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-slate-800">Diagramme PERT</h3>
+                  <p className="text-sm text-slate-600">Analyse des chemins critiques</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Section d'ajout de tâches */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-2">
-                <Plus className="w-6 h-6 text-blue-600" />
-                Ajouter une tâche
-              </h2>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 pb-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8">
 
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ID de la tâche
-                    </label>
+            {/* Task Input Section */}
+            <div className="lg:col-span-1">
+              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 sticky top-8">
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="p-2 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl">
+                    <Plus className="w-6 h-6 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-800">Nouvelle tâche</h2>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">ID de la tâche</label>
+                      <input
+                        type="text"
+                        value={newTask.id}
+                        onChange={(e) => setNewTask(prev => ({ ...prev, id: e.target.value.toUpperCase() }))}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50/50"
+                        placeholder="A, B, C..."
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-slate-700">Durée (jours)</label>
+                      <input
+                        type="number"
+                        value={newTask.duration}
+                        onChange={(e) => setNewTask(prev => ({ ...prev, duration: e.target.value }))}
+                        className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50/50"
+                        placeholder="10"
+                        min="1"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Nom de la tâche</label>
                     <input
                       type="text"
-                      value={newTask.id}
-                      onChange={(e) => setNewTask(prev => ({ ...prev, id: e.target.value.toUpperCase() }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="A, B, C..."
+                      value={newTask.name}
+                      onChange={(e) => setNewTask(prev => ({ ...prev, name: e.target.value }))}
+                      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50/50"
+                      placeholder="Description de la tâche"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Durée (jours)
-                    </label>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-slate-700">Dépendances</label>
                     <input
-                      type="number"
-                      value={newTask.duration}
-                      onChange={(e) => setNewTask(prev => ({ ...prev, duration: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="10"
-                      min="1"
+                      type="text"
+                      value={dependencyInput}
+                      onChange={(e) => handleDependencyChange(e.target.value)}
+                      className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-slate-50/50"
+                      placeholder="A, B, C ou A B C ou A;B;C"
                     />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Nom de la tâche
-                  </label>
-                  <input
-                    type="text"
-                    value={newTask.name}
-                    onChange={(e) => setNewTask(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="Description de la tâche"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Dépendances
-                  </label>
-                  <input
-                    type="text"
-                    value={dependencyInput}
-                    onChange={(e) => handleDependencyChange(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="A, B, C ou A B C ou A;B;C"
-                  />
-                  <div className="mt-2 text-sm text-gray-600">
-                    {getAvailableDependencies().length > 0 ? (
-                      <p>
-                        <span className="font-medium">Tâches disponibles :</span> {getAvailableDependencies().join(', ')}
-                      </p>
-                    ) : (
-                      <p>Ajoutez d&apos;abord des tâches pour créer des dépendances</p>
+                    <div className="text-sm text-slate-600">
+                      {getAvailableDependencies().length > 0 ? (
+                        <p><span className="font-semibold">Disponibles :</span> {getAvailableDependencies().join(', ')}</p>
+                      ) : (
+                        <p>Ajoutez d&apos;abord des tâches</p>
+                      )}
+                    </div>
+                    {newTask.dependencies.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {newTask.dependencies.map((dep, index) => (
+                          <span
+                            key={index}
+                            className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                              getAvailableDependencies().includes(dep)
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : 'bg-red-100 text-red-800'
+                            }`}
+                          >
+                            {dep} {!getAvailableDependencies().includes(dep) && '⚠️'}
+                          </span>
+                        ))}
+                      </div>
                     )}
                   </div>
-                  {newTask.dependencies.length > 0 && (
-                    <div className="mt-2 flex flex-wrap gap-1">
-                      <span className="text-sm text-gray-600">Dépendances sélectionnées :</span>
-                      {newTask.dependencies.map((dep, index) => (
-                        <span
-                          key={index}
-                          className={`px-2 py-1 rounded text-xs font-semibold ${
-                            getAvailableDependencies().includes(dep)
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}
-                        >
-                          {dep}
-                          {!getAvailableDependencies().includes(dep) && ' ⚠️'}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+
+                  <button
+                    onClick={addTask}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-2 font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                  >
+                    <Plus className="w-5 h-5" />
+                    Ajouter la tâche
+                  </button>
                 </div>
 
-                <button
-                  onClick={addTask}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 font-medium"
-                >
-                  <Plus className="w-4 h-4" />
-                  Ajouter la tâche
-                </button>
-              </div>
-
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex gap-2">
-                  <button
-                    onClick={loadSampleData}
-                    className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center gap-2 font-medium"
-                  >
-                    <Database className="w-4 h-4" />
-                    Données test
-                  </button>
-                  <button
-                    onClick={clearData}
-                    className="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2 font-medium"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    Effacer tout
-                  </button>
+                <div className="mt-8 pt-6 border-t border-slate-200">
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      onClick={loadSampleData}
+                      className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-3 px-4 rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-300 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg"
+                    >
+                      <Database className="w-4 h-4" />
+                      Exemple
+                    </button>
+                    <button
+                      onClick={clearData}
+                      className="bg-gradient-to-r from-red-500 to-red-600 text-white py-3 px-4 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-300 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Effacer
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Liste des tâches */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-                Tâches ajoutées ({tasks.length})
-              </h2>
+            {/* Tasks List and Generation */}
+            <div className="lg:col-span-2 space-y-8">
 
-              {tasks.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Aucune tâche ajoutée pour le moment</p>
-                  <p className="text-sm">Ajoutez des tâches ou chargez les données de test</p>
+              {/* Tasks List */}
+              <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-slate-500 to-slate-600 rounded-xl">
+                      <BarChart3 className="w-6 h-6 text-white" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-800">Tâches du projet</h2>
+                  </div>
+                  <div className="bg-gradient-to-r from-blue-100 to-purple-100 px-4 py-2 rounded-full">
+                    <span className="text-lg font-bold text-slate-700">{tasks.length}</span>
+                  </div>
                 </div>
-              ) : (
-                <div className="space-y-3 max-h-96 overflow-y-auto">
-                  {tasks.map((task, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm font-semibold">
-                              {task.id}
-                            </span>
-                            <h3 className="font-medium text-gray-800">{task.name}</h3>
+
+                {tasks.length === 0 ? (
+                  <div className="text-center py-16">
+                    <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-slate-100 to-slate-200 rounded-2xl flex items-center justify-center">
+                      <Calendar className="w-12 h-12 text-slate-400" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-slate-700 mb-2">Aucune tâche</h3>
+                    <p className="text-slate-500 mb-6">Ajoutez des tâches ou chargez un exemple</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                    {tasks.map((task, index) => (
+                      <div key={index} className="group bg-gradient-to-r from-slate-50 to-blue-50 p-6 rounded-2xl border border-slate-200 hover:shadow-lg transition-all duration-300">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-4 mb-3">
+                              <span className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-3 py-1 rounded-lg text-sm font-bold">
+                                {task.id}
+                              </span>
+                              <h3 className="font-semibold text-slate-800 text-lg">{task.name}</h3>
+                            </div>
+                            <div className="flex items-center gap-6 text-sm text-slate-600">
+                              <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <span><span className="font-semibold">Durée:</span> {task.duration} jours</span>
+                              </div>
+                              {task.dependencies.length > 0 && (
+                                <div className="flex items-center gap-2">
+                                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                                  <span><span className="font-semibold">Dépend de:</span> {task.dependencies.join(', ')}</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                          <div className="text-sm text-gray-600 space-y-1">
-                            <p><span className="font-medium">Durée:</span> {task.duration} jours</p>
-                            {task.dependencies.length > 0 && (
-                              <p>
-                                <span className="font-medium">Dépendances:</span> {task.dependencies.join(', ')}
-                              </p>
-                            )}
-                          </div>
+                          <button
+                            onClick={() => removeTask(task.id)}
+                            className="opacity-0 group-hover:opacity-100 text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-all duration-300"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
                         </div>
-                        <button
-                          onClick={() => removeTask(task.id)}
-                          className="text-red-600 hover:text-red-700 p-1"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Generate Button */}
+              {tasks.length > 0 && (
+                <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                  <div className="text-center">
+                    <h2 className="text-2xl font-bold text-slate-800 mb-6">Prêt à visualiser ?</h2>
+                    <p className="text-slate-600 mb-8">Générez vos diagrammes de Gantt et PERT pour analyser votre projet</p>
+
+                    <button
+                      onClick={generateDiagrams}
+                      className="inline-flex items-center gap-4 bg-gradient-to-r from-blue-600 via-purple-600 to-emerald-600 text-white py-6 px-12 rounded-2xl hover:from-blue-700 hover:via-purple-700 hover:to-emerald-700 transition-all duration-500 font-bold text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 group"
+                    >
+                      <Play className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                      Générer les diagrammes
+                      <div className="flex gap-2">
+                        <Calendar className="w-5 h-5" />
+                        <Network className="w-5 h-5" />
+                      </div>
+                    </button>
+
+                    <div className="mt-6 flex items-center justify-center gap-8 text-sm text-slate-500">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <span>Planification Gantt</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                        <span>Analyse PERT</span>
                       </div>
                     </div>
-                  ))}
+                  </div>
                 </div>
               )}
             </div>
           </div>
-
-          {/* Boutons de génération */}
-          {tasks.length > 0 && (
-            <div className="mt-8 bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
-                Générer les diagrammes
-              </h2>
-              <div className="grid md:grid-cols-2 gap-4">
-                <button
-                  onClick={() => generateDiagram('gantt')}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 px-6 rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all transform hover:scale-105 flex items-center justify-center gap-3 font-medium text-lg shadow-lg"
-                >
-                  <Calendar className="w-6 h-6" />
-                  Diagramme de Gantt
-                </button>
-                <button
-                  onClick={() => generateDiagram('pert')}
-                  className="bg-gradient-to-r from-green-600 to-green-700 text-white py-4 px-6 rounded-lg hover:from-green-700 hover:to-green-800 transition-all transform hover:scale-105 flex items-center justify-center gap-3 font-medium text-lg shadow-lg"
-                >
-                  <Network className="w-6 h-6" />
-                  Diagramme PERT
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>
