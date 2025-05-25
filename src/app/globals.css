@@ -1,118 +1,163 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  font-family: 'Inter', sans-serif, Arial, Helvetica;
-}
+@import "tailwindcss";
 
 @layer base {
-  :root {
-    --background: 0 0% 100%; /* Default white */
-    --foreground: 210 40% 15%; /* Dark blue-gray for text */
-
-    /* Primary interactive elements (e.g., buttons, active tabs) */
-    --primary: 207 68% 53%; /* #3498db - Calm Blue */
-    --primary-foreground: 0 0% 100%; /* White */
-
-    /* Card backgrounds, page sub-sections background */
-    --card: 0 0% 95%; /* #f2f2f2 - Light Grey */
-    --card-foreground: 210 40% 15%; /* Dark blue-gray text on cards */
-
-    --popover: 0 0% 95%; /* #f2f2f2 - Light Grey */
-    --popover-foreground: 210 40% 15%;
-
-    /* Secondary elements (e.g., borders, less prominent buttons) */
-    --secondary: 210 20% 92%; /* Lighter gray for secondary elements backgrounds */
-    --secondary-foreground: 210 40% 25%; /* Darker blue-gray for text on secondary */
-
-    --muted: 210 20% 96%; /* Very light muted gray */
-    --muted-foreground: 210 30% 55%; /* Muted text color */
-
-    /* Accent for highlights (e.g., critical path, specific call-to-actions) */
-    --accent: 145 63% 49%; /* #2ecc71 - Vibrant Green */
-    --accent-foreground: 0 0% 100%; /* White */
-
-    --destructive: 0 72% 51%; /* A slightly less harsh red */
-    --destructive-foreground: 0 0% 100%; /* White */
-
-    --border: 210 20% 85%; /* Border color related to secondary */
-    --input: 210 20% 90%; /* Input background/border */
-    --ring: 207 68% 53%; /* #3498db for focus rings - Calm Blue */
-    
-    --radius: 0.5rem;
-
-    /* Chart specific colors */
-    --chart-1: 207 68% 53%; /* Primary blue */
-    --chart-2: 145 63% 49%; /* Accent green */
-    --chart-3: 25 80% 55%; /* An orange for warnings or other states */
-    --chart-4: 280 65% 60%; /* A purple */
-    --chart-5: 340 75% 55%; /* A pink/red */
-
-    /* Sidebar specific (if used, adopting main theme for consistency) */
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 210 40% 15%;
-    --sidebar-primary: 207 68% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 145 63% 49%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 210 20% 85%;
-    --sidebar-ring: 207 68% 53%;
+  html {
+    font-family: system-ui, sans-serif;
   }
 
-  .dark {
-    --background: 210 20% 10%; 
-    --foreground: 0 0% 95%;
-
-    --primary: 207 68% 58%; 
-    --primary-foreground: 0 0% 10%;
-
-    --card: 210 20% 15%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 210 20% 15%;
-    --popover-foreground: 0 0% 95%;
-
-    --secondary: 210 15% 25%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 210 15% 20%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 145 63% 54%;
-    --accent-foreground: 0 0% 10%;
-
-    --destructive: 0 62.8% 50.6%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 210 15% 30%;
-    --input: 210 15% 28%;
-    --ring: 207 68% 58%;
-
-    /* Chart specific colors for dark theme */
-    --chart-1: 207 68% 58%;
-    --chart-2: 145 63% 54%;
-    --chart-3: 25 70% 60%;
-    --chart-4: 280 60% 65%;
-    --chart-5: 340 70% 60%;
-
-    --sidebar-background: 210 20% 12%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 207 68% 58%;
-    --sidebar-primary-foreground: 0 0% 10%;
-    --sidebar-accent: 145 63% 54%;
-    --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 210 15% 30%;
-    --sidebar-ring: 207 68% 58%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply antialiased;
+  }
+}
+
+@layer components {
+  .gantt-cell {
+    @apply w-8 h-8 border-l border-gray-200 relative;
+  }
+
+  .gantt-bar {
+    @apply h-6 rounded-sm mx-0.5 mt-1 shadow-sm;
+  }
+
+  .gantt-bar-critical {
+    @apply bg-red-500 shadow-md;
+  }
+
+  .pert-node {
+    @apply w-20 h-20 rounded-full border-2 flex flex-col items-center justify-center text-xs font-semibold;
+  }
+
+  .pert-node-normal {
+    @apply border-gray-400 bg-white text-gray-800;
+  }
+
+  .pert-node-critical {
+    @apply border-red-500 bg-red-50 text-red-800;
+  }
+
+  .task-card {
+    @apply bg-gray-50 p-4 rounded-lg border border-gray-200;
+  }
+
+  .task-card-critical {
+    @apply bg-red-50 border-red-200;
+  }
+
+  .button-primary {
+    @apply bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium;
+  }
+
+  .button-secondary {
+    @apply bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition-colors font-medium;
+  }
+
+  .button-success {
+    @apply bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium;
+  }
+
+  .button-danger {
+    @apply bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors font-medium;
+  }
+}
+
+/* Animations personnalisées */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Styles pour les tableaux responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .table-responsive table {
+    width: 100%;
+    min-width: 600px;
+  }
+}
+
+/* Styles pour les barres de Gantt */
+.gantt-timeline {
+  min-width: fit-content;
+}
+
+.gantt-task-row {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.gantt-task-row:hover {
+  background-color: #f9fafb;
+}
+
+/* Styles pour les nœuds PERT */
+.pert-network {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pert-edge {
+  position: relative;
+}
+
+.pert-edge::after {
+  content: '→';
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-weight: bold;
+}
+
+/* Responsive design amélioré */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .grid-responsive {
+    grid-template-columns: 1fr;
+  }
+
+  .text-responsive {
+    font-size: 1.5rem;
+  }
+
+  .card-responsive {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
